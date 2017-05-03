@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8" />
+    <title>圖片轉像素圖(表格版)</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+
+    <style type="text/css">
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            font-family: "微軟正黑體";
+            background-color: rgb(238, 238, 238);
+            font-size: 16px;
+        }
+
+        td {
+            min-width: 1px;
+            min-height: 1px;
+        }
+
+        img, canvas {
+            height: 0px;
+            width: 0px;
+            position: fixed;
+            top: -10px;
+            left: -10px;
+        }
+
+        .title {
+            background-color: rgb(0, 0, 0);
+            margin: 0px;
+        }
+
+            .title h1 {
+                margin: 0px;
+                color: #FFF;
+                font-size: 24px;
+                padding: 5px;
+            }
+
+        .but {
+            padding: 10px;
+            background-color: rgb(0, 177, 255);
+            color: #fff;
+            display: inline-block;
+            /*禁止選取*/
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            .but:hover {
+                background-color: rgb(0, 125, 196);
+            }
+
+            .but:active {
+                transform: scale(1.03);
+                background-color: rgb(0, 196, 136);
+            }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: rgb(211, 211, 211);
+            margin: 30px 0px;
+        }
+    </style>
+
+
+
+
+
+</head>
+<body>
+
+    <div class="title"><h1>圖片轉像素圖(表格版)</h1></div>
+
+    <div style="margin:5px;">
+
+
+        <img id="img01" />
+        <canvas id="can01"></canvas>
+
+
+        <input style="display:none" type="file" id="file_input" accept="image/*" />
+        <div onclick='document.getElementById("file_input").click()' class="but">載入圖片</div>
+        <div onclick='fun_轉換(document.getElementById("img01"))' class="but">套用設定</div>
+
+
+
+        <table style="margin-top:10px;">
+            <tr>
+                <td>寬度格數(1~120)</td>
+                <td><input type="tel" id="text_wid" value="50" /></td>
+            </tr>
+            <tr>
+                <td>輸出寬度</td>
+                <td><input type="tel" id="text_output" value="570" /></td>
+            </tr>
+        </table>
+
+
+        <!--輸出結果，第一次執行後才會出現-->
+        <div id="div_out" style="display:none">
+            <hr>
+            <div class="but" onclick="fun_copy()">複製到剪貼簿</div>
+            <div id="d" contenteditable="false" style="width:100%;overflow-x:auto;"></div>
+        </div>
+
+
+        <hr />
+        說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br>
+        版本：1.0.0<br>
+        作者：<a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
+        <br><br>
+
+    </div>
+
+
+    <script type="text/javascript">
+
+
+        ///選取物件
+        function SelectText(element) {
+            var doc = document,
+              text = doc.getElementById(element),
+              range, selection;
+            if (doc.body.createTextRange) {
+                range = document.body.createTextRange();
+                range.moveToElementText(text);
+                range.select();
+            } else if (window.getSelection) {
+                selection = window.getSelection();
+                range = document.createRange();
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+
+
+
+        function fun_copy() {
+            SelectText("d");//選取物件
+            document.execCommand('copy');//複製當前選取的東西
+        }
+
+
+
+
+
+        window.onload = function () {
+
+
+            //選取圖片
+            var input = document.getElementById("file_input");
+
+            if (typeof FileReader === 'undefined') {
+                alert("抱歉，你的瀏覽器不支持 FileReader");
+                input.setAttribute('disabled', 'disabled');
+            } else {
+                input.addEventListener('change', readFile, false);
+            }
+
+
+
+            function readFile() {
+                var file = this.files[0];
+                /*if (!/image\/\w+/.test(file.type)) {
+                    alert("文件必須為圖片！");
+                    return false;
+                }*/
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    var src = this.result;//把載入的檔案變成圖片網址
+
+                    fun_載入圖片(src);
+                    document.getElementById("div_out").style.display = "block";//第一次執行後就顯示輸出結果
+
+                }
+            }
+
+        }
+
+
+
+        function fun_載入圖片(src) {
+
+            var obj_img = document.createElement("img");
+
+            obj_img.src = src;
+            obj_img.onload = function () {
+
+
+                var wid = obj_img.naturalWidth;
+                var hei = obj_img.naturalHeight;
+
+
+                //避免圖太大
+                var max_size = 300;
+
+                if (wid > max_size || hei > max_size) {
+                    var w01 = wid / max_size;
+                    var h01 = hei / max_size;
+
+                    if (w01 > h01) {
+                        wid = wid / w01;
+                        hei = hei / w01;
+                    } else {
+                        wid = wid / h01;
+                        hei = hei / h01;
+                    }
+                }
+
+                //設定canvas物件
+                var can = document.getElementById("can01");
+                can.width = wid;
+                can.height = hei;
+                c = can.getContext("2d");
+                c.drawImage(obj_img, 0, 0, wid, hei);
+
+                document.getElementById("img01").src = can.toDataURL('image/png', 0.8);//輸出成圖片
+
+                document.getElementById("img01").onload = function () {
+
+                    fun_轉換(document.getElementById("img01"));//圖片載入完成後執行轉換
+                    document.getElementById("img01").onload = function () { };
+                }
+
+                document.getElementById("file_input").value = "";//避免無法開啟相同的圖片
+
+            }
+
+        }
+
+
+
+
+        function fun_轉換(obj_img) {
+
+            //取得圖片物件
+            var wid = obj_img.naturalWidth;
+            var hei = obj_img.naturalHeight;
+
+            //寬度數量
+            var max_wid = parseInt(document.getElementById("text_wid").value.trim());
+            if (isNaN(max_wid)) {
+                max_wid = 50;
+            }
+            if (max_wid <= 0) {
+                max_wid = 1;
+            }
+            if (max_wid > 120) {
+                max_wid = 120;
+            }
+            document.getElementById("text_wid").value = max_wid;
+
+            var double_除數 = wid / max_wid;
+
+            wid = Math.floor(wid / double_除數);
+            hei = Math.floor(hei / double_除數);
+
+
+            //輸出結果的長寬
+            var output_wid = parseInt(document.getElementById("text_output").value.trim());
+            if (isNaN(output_wid)) {
+                output_wid = 500;
+            }
+            if (output_wid <= 0) {
+                output_wid = 1;
+            }
+            if (output_wid > 1000) {
+                output_wid = 1000;
+            }
+            document.getElementById("text_output").value = output_wid;
+
+            var double_除數 = wid / output_wid;
+
+            var output_wid = Math.floor(wid / double_除數);
+            var output_hei = Math.floor(hei / double_除數);
+
+
+            //原圖的canvas物件
+            var can01 = document.getElementById("can01");
+            can01.width = wid;
+            can01.height = hei;
+            c01 = can01.getContext("2d");
+            //c01.scale(10, 10);
+            c01.drawImage(obj_img, 0, 0, wid, hei);
+
+
+
+
+            //轉換
+            var s = c01.getImageData(0, 0, wid, hei);//從原圖取得每個像素點
+            //var r = c_2.createImageData(56, 90);//新建一個空白的
+
+            //將值放入另一個二維陣列中處理
+            var ar = new Array(wid);
+            for (var i = 0; i < wid; i++) {
+                ar[i] = new Array(hei);
+            }
+
+            var sum = "<p>&nbsp;</p> <table cellspacing='0' cellpadding='0' width='" + output_wid + "' height='" + output_hei + "'>";
+
+            for (var i = 0; i < wid; i++) {
+                for (var j = 0; j < hei; j++) {
+
+                    var k = (wid * j + i) * 4;//取個陣列對應的位置
+
+                    //取個RGBA
+                    var col_r = s.data[k + 0].toString(16);
+                    var col_g = s.data[k + 1].toString(16);
+                    var col_b = s.data[k + 2].toString(16);
+                    var col_a = s.data[k + 3];
+
+                    //避免某些值是個位數
+                    if (col_r.length == 1) {
+                        col_r = "0" + col_r;
+                    }
+                    if (col_g.length == 1) {
+                        col_g = "0" + col_g;
+                    }
+                    if (col_b.length == 1) {
+                        col_b = "0" + col_b;
+                    }
+
+                    var td = "<td bgcolor='#" + col_r + col_g + col_b + "'></td>";
+
+                    if (col_a < 3) {//不印出透明顏色
+                        td = "<td></td>";
+                    }
+
+                    ar[i][j] = td;
+                }
+            }
+
+
+            //產生表格
+            for (var i = 0; i < hei; i++) {
+                for (var j = 0; j < wid; j++) {
+
+                    var td = "";
+
+                    if (j == 0) {
+                        td += "<tr>";
+                    }
+
+                    td += ar[j][i];
+                    if (j == wid - 1) {
+                        td += "</tr>";
+                    }
+
+                    sum += td;
+                }
+            }
+
+            sum += "</table> <p>&nbsp;</p><p>&nbsp;</p>";
+
+            document.getElementById("d").innerHTML = sum;
+
+        }
+
+
+    </script>
+</body>
+</html>
