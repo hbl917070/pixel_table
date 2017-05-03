@@ -30,6 +30,10 @@
             left: -10px;
         }
 
+        input[type='tel'] {
+            padding: 5px;
+        }
+
         .title {
             background-color: rgb(0, 0, 0);
             margin: 0px;
@@ -43,6 +47,7 @@
             }
 
         .but {
+            margin: 5px;
             padding: 10px;
             background-color: rgb(0, 177, 255);
             color: #fff;
@@ -70,6 +75,39 @@
             background-color: rgb(211, 211, 211);
             margin: 30px 0px;
         }
+
+
+        /*避免IE跑出奇怪的東西*/
+        textarea {
+            opacity: 0;
+            width: 0px;
+            height: 0px;
+            display: block;
+            position: absolute;
+        }
+
+        /*複製成功的訊息框*/
+        #div_alert {
+            background-color: rgb(16, 16, 16);
+            color: #FFF;
+            display: inline-block;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            margin: auto;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 20px;
+            line-height: 40px;
+            height: 40px;
+            width: 100px;
+            text-align: center;
+            transition: all 0.3s;
+            pointer-events: none;
+            opacity: 0;
+        }
     </style>
 
 
@@ -90,18 +128,18 @@
 
         <input style="display:none" type="file" id="file_input" accept="image/*" />
         <div onclick='document.getElementById("file_input").click()' class="but">載入圖片</div>
-        <div onclick='fun_轉換(document.getElementById("img01"))' class="but">套用設定</div>
+        <div onclick='fun_轉換(document.getElementById("img01"))' class="but" id="but_Apply" style="display:none;">套用設定</div>
 
 
 
         <table style="margin-top:10px;">
             <tr>
-                <td>寬度格數(1~120)</td>
-                <td><input type="tel" id="text_wid" value="50" /></td>
+                <td>水平格數(1~120)</td>
+                <td><input type="tel" id="text_wid" value="50" title="水平的格子數量"/></td>
             </tr>
             <tr>
                 <td>輸出寬度</td>
-                <td><input type="tel" id="text_output" value="570" /></td>
+                <td><input type="tel" id="text_output" value="570" title="輸出的表格寬度" /></td>
             </tr>
         </table>
 
@@ -109,24 +147,49 @@
         <!--輸出結果，第一次執行後才會出現-->
         <div id="div_out" style="display:none">
             <hr>
-            <div class="but" onclick="fun_copy()">複製到剪貼簿</div>
+            <div class="but" onclick="fun_copy_table()" title="直接把表格複製到剪貼簿">直接複製</div>
+            <div class="but" onclick="fun_copy_html()" title="複製成html原始碼（純文字）">複製成html</div>
+            <div class="but" onclick="fun_copy_baha()" title="複製成巴哈姆特原始碼（純文字）">複製成巴哈姆特原始碼</div>
+
             <div id="d" contenteditable="false" style="width:100%;overflow-x:auto;"></div>
         </div>
 
 
         <hr />
         說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br>
-        版本：1.0.0<br>
+        版本：1.1.0<br>
+        討論區：<a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br>
         作者：<a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
         <br><br>
 
     </div>
 
 
+
+
+    <div id="div_alert">訊息框</div>
+
+
+
     <script type="text/javascript">
 
+        ///
+        ///顯示訊息框
+        ///
+        function fun_alert(s) {
+            var div_alert = document.getElementById("div_alert");
+            div_alert.style.opacity = 1;
+            div_alert.innerHTML = s;
+            setTimeout(function () {
+                if (div_alert.style.opacity == 1)
+                    div_alert.style.opacity = 0;
+            }, 1000);
+        }
 
+
+        ///
         ///選取物件
+        ///
         function SelectText(element) {
             var doc = document,
               text = doc.getElementById(element),
@@ -145,14 +208,70 @@
         }
 
 
-
-
-        function fun_copy() {
+        ///
+        ///直接複製table
+        ///
+        function fun_copy_table() {
             SelectText("d");//選取物件
             document.execCommand('copy');//複製當前選取的東西
+            fun_alert("複製成功");
         }
 
 
+        ///
+        ///複製成html原始碼
+        ///
+        function fun_copy_html() {
+            var x = document.getElementById("d").innerHTML;
+            copy_string(x);
+            fun_alert("複製成功");
+        }
+
+
+        ///
+        ///複製成巴哈姆特原始碼
+        ///
+        function fun_copy_baha() {
+
+            var obj_table = document.getElementById("d").getElementsByTagName("table")[0];
+            var wid = obj_table.getAttribute("width");
+            var hei = obj_table.getAttribute("height");
+            var sum = "[div] [/div][div] [/div] [table width=" + wid + " cellspacing=0 cellpadding=0 height=" + hei + "]";
+
+            for (var i = 0; i < obj_table.getElementsByTagName("tr").length; i++) {
+
+
+                sum += "[tr]";
+
+                for (var j = 0; j < obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td").length; j++) {
+
+                    var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
+                    sum += "[td bgcolor=" + bgcolor + "][/td]";
+                }
+
+                sum += "[/tr]";
+
+            }
+            sum += "[/table][div] [/div][div] [/div]";
+            copy_string(sum);
+
+            fun_alert("複製成功");
+        }
+
+
+        /*
+        * 複製到剪貼簿
+        */
+        function copy_string(s) {
+            var clip_area = document.createElement('textarea');
+            clip_area.textContent = s;
+
+            document.body.appendChild(clip_area);
+            clip_area.select();
+
+            document.execCommand('copy');
+            clip_area.remove();
+        }
 
 
 
@@ -184,7 +303,8 @@
 
                     fun_載入圖片(src);
                     document.getElementById("div_out").style.display = "block";//第一次執行後就顯示輸出結果
-
+                    document.getElementById("but_Apply").style.display = "inline-block";//第一次執行後就顯示輸出結果
+                    
                 }
             }
 
@@ -192,6 +312,9 @@
 
 
 
+        ///
+        ///
+        ///
         function fun_載入圖片(src) {
 
             var obj_img = document.createElement("img");
@@ -243,7 +366,9 @@
 
 
 
-
+        ///
+        ///
+        ///
         function fun_轉換(obj_img) {
 
             //取得圖片物件
