@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 
 <html lang="zh-tw">
+
 <head>
     <meta charset="utf-8" />
     <title>圖片轉像素圖(表格版)</title>
@@ -9,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
 
     <style type="text/css">
-        html, body {
+        html,
+        body {
             margin: 0px;
             padding: 0px;
             font-family: "微軟正黑體";
@@ -22,7 +24,7 @@
             min-height: 1px;
         }
 
-        img, canvas {
+        .none {
             height: 0px;
             width: 0px;
             position: fixed;
@@ -39,12 +41,12 @@
             margin: 0px;
         }
 
-            .title h1 {
-                margin: 0px;
-                color: #FFF;
-                font-size: 24px;
-                padding: 5px;
-            }
+        .title h1 {
+            margin: 0px;
+            color: #FFF;
+            font-size: 24px;
+            padding: 5px;
+        }
 
         .but {
             margin: 5px 5px 5px 0px;
@@ -62,14 +64,14 @@
             user-select: none;
         }
 
-            .but:hover {
-                background-color: rgb(0, 125, 196);
-            }
+        .but:hover {
+            background-color: rgb(0, 125, 196);
+        }
 
-            .but:active {
-                transform: scale(1.03);
-                background-color: rgb(0, 196, 136);
-            }
+        .but:active {
+            transform: scale(1.03);
+            background-color: rgb(0, 196, 136);
+        }
 
         hr {
             border: none;
@@ -77,9 +79,8 @@
             background-color: rgb(211, 211, 211);
             margin: 30px 0px;
         }
-
-
         /*避免IE跑出奇怪的東西*/
+
         #textarea_copy {
             opacity: 0;
             width: 0px;
@@ -88,8 +89,8 @@
             position: fixed;
             top: -20px;
         }
-
         /*複製成功的訊息框*/
+
         #div_alert {
             background-color: rgb(16, 16, 16);
             z-index: 500;
@@ -124,19 +125,19 @@
         }
 
         .box {
-            background-color: rgba(255,255,255,1);
+            background-color: rgba(255, 255, 255, 1);
             margin: 20px 8px 20px 8px;
-            box-shadow: 0px 1px 3px rgba(0,0,0,0.35);
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.35);
             border-radius: 3px;
             padding: 5px;
         }
 
-            .box h2 {
-                margin: 0px;
-                margin-bottom: 10px;
-                font-size: 24px;
-                margin-left: 0px;
-            }
+        .box h2 {
+            margin: 0px;
+            margin-bottom: 10px;
+            font-size: 24px;
+            margin-left: 0px;
+        }
     </style>
 
 
@@ -145,16 +146,19 @@
 
 
 </head>
+
 <body>
 
     <!--【大標題】-->
-    <div class="title"><h1>圖片轉像素圖(表格版)</h1></div>
+    <div class="title">
+        <h1>圖片轉像素圖(表格版)</h1>
+    </div>
 
 
 
 
-    <img id="img01" />
-    <canvas id="can01"></canvas>
+    <img id="img01" class="none" />
+    <canvas id="can01" class="none"></canvas>
     <input style="display:none" type="file" id="file_input" accept="image/*" />
     <div id="div_alert">訊息框</div>
 
@@ -191,6 +195,7 @@
 
             <style>
                 /*放置表格外層的DIV，用來產生水平捲軸*/
+
                 .div_output_type {
                     overflow-x: auto;
                     overflow-y: hidden;
@@ -200,45 +205,43 @@
                 }
 
                 #table_output_type {
-                    background-color: rgba(50,50,50,0);
+                    background-color: rgba(50, 50, 50, 0);
                     border-collapse: collapse;
                 }
 
-                    #table_output_type a {
-                        margin: 5px 15px 0px 15px;
-                        font-size: 20px;
-                        font-weight: 900;
-                        white-space: nowrap;
-                        display:block;
-                        line-height:30px;
-                    }
+                #table_output_type a {
+                    margin: 5px 15px 0px 15px;
+                    font-size: 20px;
+                    font-weight: 900;
+                    white-space: nowrap;
+                    display: block;
+                    line-height: 30px;
+                }
 
-                    #table_output_type td {
-                        border-bottom: 6px solid rgba(0,0,0,0);
-                        /*禁止選取*/
-                        -webkit-touch-callout: none;
-                        -webkit-user-select: none;
-                        -khtml-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
-                    }
+                #table_output_type td {
+                    border-bottom: 6px solid rgba(0, 0, 0, 0);
+                    /*禁止選取*/
+                    -webkit-touch-callout: none;
+                    -webkit-user-select: none;
+                    -khtml-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
 
-                        #table_output_type td:hover {
-                            color: rgb(0, 146, 255);
-                        }
+                #table_output_type td:hover {
+                    color: rgb(0, 146, 255);
+                }
 
                 .table_output_sel {
                     border-bottom: 6px solid #00b1ff !important;
                 }
-
-
-
                 /*下方的水平線（漸層）*/
+
                 .div_output_type_ling {
-                    margin-top:-10px;
-                    margin-left:-5px;
-                    margin-right:-5px;
+                    margin-top: -10px;
+                    margin-left: -5px;
+                    margin-right: -5px;
                     height: 1px;
                     background-color: rgb(0, 177, 255);
                     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
@@ -248,7 +251,8 @@
                     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#00000000',GradientType=0 );*/
                 }
 
-                #text_output_html, #text_output_baha {
+                #text_output_html,
+                #text_output_baha {
                     height: 30vh;
                     display: block;
                     width: calc(100% - 5px);
@@ -262,14 +266,13 @@
                 <table id="table_output_type" border="0" align="center">
                     <tr>
                         <td id="td_output_1"><a>表格</a></td>
-                        <td id="td_output_2" style="display:none"><h2>圖片</h2></td>
+                        <td id="td_output_2"><a>圖片</a></td>
                         <td id="td_output_3"><a>html原始碼</a></td>
                         <td id="td_output_4"><a>巴哈姆特原始碼</a></td>
                     </tr>
                 </table>
 
                 <script>
-
                     var table_output_type = document.getElementById("table_output_type");
                     for (var i = 0; i < table_output_type.getElementsByTagName("td").length; i++) {
 
@@ -285,6 +288,11 @@
                     ///選擇某一個類型
                     ///
                     function fun_sel_output_type(int_nub) {
+
+                        //避免重複執行
+                        if (document.getElementById("d" + int_nub).style.display == "block") {
+                            return;
+                        }
 
                         for (var j = 0; j < table_output_type.getElementsByTagName("td").length; j++) {
                             table_output_type.getElementsByTagName("td")[j].className = "";
@@ -302,6 +310,7 @@
                             document.getElementById("d1").style.display = "block";
                         } else if (int_nub == "2") {
                             document.getElementById("d2").style.display = "block";
+                            fun_輸出成圖片();
                         } else if (int_nub == "3") {
                             document.getElementById("d3").style.display = "block";
                             fun_show_html();
@@ -312,12 +321,9 @@
 
 
                     }
-
-
-
                 </script>
 
-                
+
             </div>
 
 
@@ -325,25 +331,36 @@
 
 
 
-
-
+            <!--輸出表格-->
             <div id="d1" style="width:100%;overflow-x:auto;">
-                <div class="but" onclick="fun_copy_table()" title="直接把表格複製到剪貼簿">直接複製</div>
+                <div class="but" onclick="fun_copy_table()" title="直接把表格複製到剪貼簿">複製 表格</div>
 
                 <div id="d1_output" style="width:100%;overflow-x:auto;">
                 </div>
 
             </div>
 
-            <div id="d2" style="width:100%;overflow-x:auto;"></div>
+            <!--輸出圖片-->
+            <div id="d2" style="width:100%;overflow-x:auto;">
 
+                <a id="a_download"></a>
+                <div class="but" onclick="fun_save_img()" title="儲存圖片">儲存圖片</div>
+                <p>如果圖片無法順利儲存，請自行右鍵存圖（手機長按圖片存圖）</p>
+
+                <canvas id="can_output_img" class="none"></canvas>
+                <canvas id="can_output_img_2" class="none"></canvas>
+                <img id="img_output">
+            </div>
+
+            <!--輸出html原始碼-->
             <div id="d3" style="width:100%;overflow-x:auto;">
-                <div class="but" onclick="copy_string('text_output_html')" title="複製成html原始碼（純文字）">複製成html</div>
+                <div class="but" onclick="copy_string('text_output_html')" title="複製html原始碼（純文字）">複製 HTML原始碼</div>
                 <textarea id="text_output_html"></textarea>
             </div>
 
+            <!--輸出巴哈姆特原始碼-->
             <div id="d4" style="width:100%;overflow-x:auto;">
-                <div class="but" onclick="copy_string('text_output_baha')" title="複製成巴哈姆特原始碼（純文字）">複製成巴哈姆特原始碼</div>
+                <div class="but" onclick="copy_string('text_output_baha')" title="複製巴哈姆特原始碼（純文字）">複製 巴哈姆特原始碼</div>
                 <textarea id="text_output_baha"></textarea>
             </div>
         </div>
@@ -355,10 +372,10 @@
         <!--【說明】-->
         <div class="box">
             <h2>說明</h2>
-            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br>
-            版本：1.3.0<br>
-            討論區：<a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br>
-            作者：<a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
+            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.4.0
+            <br> 討論區：
+            <a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br> 作者：
+            <a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
 
 
         </div>
@@ -398,359 +415,420 @@
 
 
     <script type="text/javascript">
-
-        ///
-        ///顯示訊息框
-        ///
-        function fun_alert(s) {
-            var div_alert = document.getElementById("div_alert");
-            div_alert.style.opacity = 1;
-            div_alert.innerHTML = s;
-            setTimeout(function () {
-                if (div_alert.style.opacity == 1)
-                    div_alert.style.opacity = 0;
-            }, 1000);
-        }
-
-
-        ///
-        ///選取物件
-        ///
-        function SelectText(element) {
-            var doc = document,
-              text = doc.getElementById(element),
-              range, selection;
-            if (doc.body.createTextRange) {
-                range = document.body.createTextRange();
-                range.moveToElementText(text);
-                range.select();
-            } else if (window.getSelection) {
-                selection = window.getSelection();
-                range = document.createRange();
-                range.selectNodeContents(text);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }
-
-
-        ///
-        ///直接複製table
-        ///
-        function fun_copy_table() {
-            SelectText("d1_output");//選取物件
-            document.execCommand('copy');//複製當前選取的東西
-            fun_alert("複製成功");
-        }
-
-
-        ///
-        ///複製成html原始碼
-        ///
-        function fun_show_html() {
-            var x = document.getElementById("d1_output").innerHTML;
-
-            document.getElementById("text_output_html").value = x;
-        }
-
-
-        ///
-        ///複製成巴哈姆特原始碼
-        ///
-        function fun_show_baha() {
-
-            var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
-            var wid = obj_table.getAttribute("width");
-            var hei = obj_table.getAttribute("height");
-            var sum = "[div] [/div][div] [/div] [table width=" + wid + " cellspacing=0 cellpadding=0 height=" + hei + "]";
-
-            for (var i = 0; i < obj_table.getElementsByTagName("tr").length; i++) {
-
-
-                sum += "[tr]";
-
-                for (var j = 0; j < obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td").length; j++) {
-
-                    var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
-                    sum += "[td bgcolor=" + bgcolor + "][/td]";
-                }
-
-                sum += "[/tr]";
-
-            }
-            sum += "[/table][div] [/div][div] [/div]";
-
-
-            document.getElementById("text_output_baha").value = sum;
-
-
-        }
-
-
-        /*
-        * 複製到剪貼簿
-        */
-        function copy_string(text_id) {
-
-            var textarea_copy = document.getElementById(text_id);
-            textarea_copy.select();
-            document.execCommand('copy');
-            fun_alert("複製成功");
-
-            //textarea_copy.textContent = "";
-
-
-            /*var clip_area = document.createElement('textarea');
-            clip_area.textContent = s;
-
-            document.body.appendChild(clip_area);
-            clip_area.select();
-
-            document.execCommand('copy');
-            clip_area.remove();*/
-        }
-
-
-
-        window.onload = function () {
-
-
-            //選取圖片
-            var input = document.getElementById("file_input");
-
-            if (typeof FileReader === 'undefined') {
-                alert("抱歉，你的瀏覽器不支持 FileReader");
-                input.setAttribute('disabled', 'disabled');
-            } else {
-                input.addEventListener('change', readFile, false);
-            }
-
-
-
-            function readFile() {
-                var file = this.files[0];
-                /*if (!/image\/\w+/.test(file.type)) {
-                    alert("文件必須為圖片！");
-                    return false;
-                }*/
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function (e) {
-                    var src = this.result;//把載入的檔案變成圖片網址
-
-                    fun_載入圖片(src);
-                    document.getElementById("div_out").style.display = "block";//第一次執行後就顯示輸出結果
-                    document.getElementById("but_Apply").style.display = "inline-block";//第一次執行後就顯示輸出結果
-
-                }
-            }
-
-        }
-
-
-
-        ///
-        ///
-        ///
-        function fun_載入圖片(src) {
-
-            var obj_img = document.createElement("img");
-
-            obj_img.src = src;
-            obj_img.onload = function () {
-
-
-                var wid = obj_img.naturalWidth;
-                var hei = obj_img.naturalHeight;
-
-
-                //避免圖太大
-                var max_size = 300;
-
-                if (wid > max_size || hei > max_size) {
-                    var w01 = wid / max_size;
-                    var h01 = hei / max_size;
-
-                    if (w01 > h01) {
-                        wid = wid / w01;
-                        hei = hei / w01;
-                    } else {
-                        wid = wid / h01;
-                        hei = hei / h01;
-                    }
-                }
-
-                //設定canvas物件
-                var can = document.getElementById("can01");
-                can.width = wid;
-                can.height = hei;
-                c = can.getContext("2d");
-                c.drawImage(obj_img, 0, 0, wid, hei);
-
-                document.getElementById("img01").src = can.toDataURL('image/png', 0.8);//輸出成圖片
-
-                document.getElementById("img01").onload = function () {
-
-                    fun_轉換(document.getElementById("img01"));//圖片載入完成後執行轉換
-                    document.getElementById("img01").onload = function () { };
-                }
-
-                document.getElementById("file_input").value = "";//避免無法開啟相同的圖片
-
-            }
-
-        }
-
-
-
-        ///
-        ///
-        ///
-        function fun_轉換(obj_img) {
-
-            //取得圖片物件
-            var wid = obj_img.naturalWidth;
-            var hei = obj_img.naturalHeight;
-
-            //寬度數量
-            var max_wid = parseInt(document.getElementById("text_wid").value.trim());
-            if (isNaN(max_wid)) {
-                max_wid = 50;
-            }
-            if (max_wid <= 0) {
-                max_wid = 1;
-            }
-            if (max_wid > 120) {
-                max_wid = 120;
-            }
-            document.getElementById("text_wid").value = max_wid;
-
-            var double_除數 = wid / max_wid;
-
-            wid = Math.floor(wid / double_除數);
-            hei = Math.floor(hei / double_除數);
-
-
-            //輸出結果的長寬
-            var output_wid = parseInt(document.getElementById("text_output").value.trim());
-            if (isNaN(output_wid)) {
-                output_wid = 500;
-            }
-            if (output_wid <= 0) {
-                output_wid = 1;
-            }
-            if (output_wid > 1000) {
-                output_wid = 1000;
-            }
-            document.getElementById("text_output").value = output_wid;
-
-            var double_除數 = wid / output_wid;
-
-            var output_wid = Math.floor(wid / double_除數);
-            var output_hei = Math.floor(hei / double_除數);
-
-
-            //原圖的canvas物件
-            var can01 = document.getElementById("can01");
-            can01.width = wid;
-            can01.height = hei;
-            c01 = can01.getContext("2d");
-            //c01.scale(10, 10);
-            c01.drawImage(obj_img, 0, 0, wid, hei);
-
-
-
-
-            //轉換
-            var s = c01.getImageData(0, 0, wid, hei);//從原圖取得每個像素點
-            //var r = c_2.createImageData(56, 90);//新建一個空白的
-
-            //將值放入另一個二維陣列中處理
-            var ar = new Array(wid);
-            for (var i = 0; i < wid; i++) {
-                ar[i] = new Array(hei);
-            }
-
-            var sum = "<p>&nbsp;</p> <table cellspacing='0' cellpadding='0' width='" + output_wid + "' height='" + output_hei + "'>";
-
-            for (var i = 0; i < wid; i++) {
-                for (var j = 0; j < hei; j++) {
-
-                    var k = (wid * j + i) * 4;//取個陣列對應的位置
-
-                    //取得 RGBA
-                    var col_r = s.data[k + 0].toString(16);
-                    var col_g = s.data[k + 1].toString(16);
-                    var col_b = s.data[k + 2].toString(16);
-                    var col_a = s.data[k + 3];
-
-                    //避免某些值是個位數
-                    if (col_r.length == 1) {
-                        col_r = "0" + col_r;
-                    }
-                    if (col_g.length == 1) {
-                        col_g = "0" + col_g;
-                    }
-                    if (col_b.length == 1) {
-                        col_b = "0" + col_b;
+                    ///
+                    ///顯示訊息框
+                    ///
+                    function fun_alert(s) {
+                        var div_alert = document.getElementById("div_alert");
+                        div_alert.style.opacity = 1;
+                        div_alert.innerHTML = s;
+                        setTimeout(function () {
+                            if (div_alert.style.opacity == 1)
+                                div_alert.style.opacity = 0;
+                        }, 1000);
                     }
 
-                    var td = "<td bgcolor='#" + col_r + col_g + col_b + "'></td>";
 
-                    if (col_a < 3) {//不印出透明顏色
-                        td = "<td></td>";
+                    ///
+                    ///選取物件
+                    ///
+                    function SelectText(element) {
+                        var doc = document,
+                            text = doc.getElementById(element),
+                            range, selection;
+                        if (doc.body.createTextRange) {
+                            range = document.body.createTextRange();
+                            range.moveToElementText(text);
+                            range.select();
+                        } else if (window.getSelection) {
+                            selection = window.getSelection();
+                            range = document.createRange();
+                            range.selectNodeContents(text);
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+                        }
                     }
 
-                    ar[i][j] = td;
-                }
-            }
 
-
-            //產生表格
-            for (var i = 0; i < hei; i++) {
-                for (var j = 0; j < wid; j++) {
-
-                    var td = "";
-
-                    if (j == 0) {
-                        td += "<tr>";
+                    ///
+                    ///直接複製table
+                    ///
+                    function fun_copy_table() {
+                        SelectText("d1_output");//選取物件
+                        document.execCommand('copy');//複製當前選取的東西
+                        fun_alert("複製成功");
                     }
 
-                    td += ar[j][i];
-                    if (j == wid - 1) {
-                        td += "</tr>";
+
+                    ///
+                    ///複製成html原始碼
+                    ///
+                    function fun_show_html() {
+                        var x = document.getElementById("d1_output").innerHTML;
+
+                        document.getElementById("text_output_html").value = x;
                     }
 
-                    sum += td;
-                }
-            }
 
-            sum += "</table> <p>&nbsp;</p><p>&nbsp;</p>";
+                    ///
+                    ///複製成巴哈姆特原始碼
+                    ///
+                    function fun_show_baha() {
 
-            document.getElementById("d1_output").innerHTML = sum;
+                        var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
+                        var wid = obj_table.getAttribute("width");
+                        var hei = obj_table.getAttribute("height");
+                        var sum = "[div] [/div][div] [/div] [table width=" + wid + " cellspacing=0 cellpadding=0 height=" + hei + "]";
 
-            fun_sel_output_type("1");//回到第一個頁籤
-        }
-
-
-
-
-
-        ///
-        ///如果是手機，就覆寫hover
-        ///
-        var useragent = navigator.userAgent;
-        useragent = useragent.toLowerCase();
-
-        if (useragent.indexOf('iphone') != -1 || useragent.indexOf('ipad') != -1 || useragent.indexOf('ipod') != -1 || useragent.indexOf('android') != -1) {
-            document.write("<style>.but:hover {background-color: rgb(0, 177, 255)!important;}</style>");
-        }
+                        for (var i = 0; i < obj_table.getElementsByTagName("tr").length; i++) {
 
 
+                            sum += "[tr]";
 
+                            for (var j = 0; j < obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td").length; j++) {
+
+                                var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
+                                sum += "[td bgcolor=" + bgcolor + "][/td]";
+                            }
+
+                            sum += "[/tr]";
+
+                        }
+                        sum += "[/table][div] [/div][div] [/div]";
+
+
+                        document.getElementById("text_output_baha").value = sum;
+
+
+                    }
+
+
+                    /*
+                    * 複製到剪貼簿
+                    */
+                    function copy_string(text_id) {
+
+                        var textarea_copy = document.getElementById(text_id);
+                        textarea_copy.select();
+                        document.execCommand('copy');
+                        fun_alert("複製成功");
+
+                        //textarea_copy.textContent = "";
+
+
+                        /*var clip_area = document.createElement('textarea');
+                        clip_area.textContent = s;
+            
+                        document.body.appendChild(clip_area);
+                        clip_area.select();
+            
+                        document.execCommand('copy');
+                        clip_area.remove();*/
+                    }
+
+
+
+                    window.onload = function () {
+
+
+                        //選取圖片
+                        var input = document.getElementById("file_input");
+
+                        if (typeof FileReader === 'undefined') {
+                            alert("抱歉，你的瀏覽器不支持 FileReader");
+                            input.setAttribute('disabled', 'disabled');
+                        } else {
+                            input.addEventListener('change', readFile, false);
+                        }
+
+
+
+                        function readFile() {
+                            var file = this.files[0];
+                            /*if (!/image\/\w+/.test(file.type)) {
+                                alert("文件必須為圖片！");
+                                return false;
+                            }*/
+                            var reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = function (e) {
+                                var src = this.result;//把載入的檔案變成圖片網址
+
+                                fun_載入圖片(src);
+                                document.getElementById("div_out").style.display = "block";//第一次執行後就顯示輸出結果
+                                document.getElementById("but_Apply").style.display = "inline-block";//第一次執行後就顯示輸出結果
+
+                            }
+                        }
+
+                    }
+
+
+
+                    ///
+                    ///
+                    ///
+                    function fun_載入圖片(src) {
+
+                        var obj_img = document.createElement("img");
+
+                        obj_img.src = src;
+                        obj_img.onload = function () {
+
+
+                            var wid = obj_img.naturalWidth;
+                            var hei = obj_img.naturalHeight;
+
+
+                            //避免圖太大
+                            var max_size = 300;
+
+                            if (wid > max_size || hei > max_size) {
+                                var w01 = wid / max_size;
+                                var h01 = hei / max_size;
+
+                                if (w01 > h01) {
+                                    wid = wid / w01;
+                                    hei = hei / w01;
+                                } else {
+                                    wid = wid / h01;
+                                    hei = hei / h01;
+                                }
+                            }
+
+                            //設定canvas物件
+                            var can = document.getElementById("can01");
+                            can.width = wid;
+                            can.height = hei;
+                            c = can.getContext("2d");
+                            c.drawImage(obj_img, 0, 0, wid, hei);
+
+                            document.getElementById("img01").src = can.toDataURL('image/png', 0.8);//輸出成圖片
+
+                            document.getElementById("img01").onload = function () {
+
+                                fun_轉換(document.getElementById("img01"));//圖片載入完成後執行轉換
+                                document.getElementById("img01").onload = function () { };
+                            }
+
+                            document.getElementById("file_input").value = "";//避免無法開啟相同的圖片
+
+                        }
+
+                    }
+
+
+
+                    ///
+                    ///
+                    ///
+                    function fun_轉換(obj_img) {
+
+                        //取得圖片物件size
+                        var wid = obj_img.naturalWidth;
+                        var hei = obj_img.naturalHeight;
+
+                        //寬度數量
+                        var max_wid = parseInt(document.getElementById("text_wid").value.trim());
+                        if (isNaN(max_wid)) {
+                            max_wid = 50;
+                        }
+                        if (max_wid <= 0) {
+                            max_wid = 1;
+                        }
+                        if (max_wid > 120) {
+                            max_wid = 120;
+                        }
+                        document.getElementById("text_wid").value = max_wid;
+
+                        var double_除數 = wid / max_wid;
+
+                        wid = Math.floor(wid / double_除數);
+                        hei = Math.floor(hei / double_除數);
+
+
+                        //輸出結果的長寬
+                        var output_wid = parseInt(document.getElementById("text_output").value.trim());
+                        if (isNaN(output_wid)) {
+                            output_wid = 500;
+                        }
+                        if (output_wid <= 0) {
+                            output_wid = 1;
+                        }
+                        if (output_wid > 1000) {
+                            output_wid = 1000;
+                        }
+                        document.getElementById("text_output").value = output_wid;
+
+                        var double_除數 = wid / output_wid;
+
+                        var output_wid = Math.floor(wid / double_除數);
+                        var output_hei = Math.floor(hei / double_除數);
+
+
+                        //原圖的canvas物件
+                        var can01 = document.getElementById("can01");
+                        can01.width = wid;
+                        can01.height = hei;
+                        c01 = can01.getContext("2d");
+                        //c01.scale(10, 10);
+                        c01.drawImage(obj_img, 0, 0, wid, hei);
+
+
+
+
+                        //轉換
+                        var s = c01.getImageData(0, 0, wid, hei);//從原圖取得每個像素點
+                        //var r = c_2.createImageData(56, 90);//新建一個空白的
+
+                        //將值放入另一個二維陣列中處理
+                        var ar = new Array(wid);
+                        for (var i = 0; i < wid; i++) {
+                            ar[i] = new Array(hei);
+                        }
+
+                        var sum = "<p>&nbsp;</p> <table cellspacing='0' cellpadding='0' width='" + output_wid + "' height='" + output_hei + "'>";
+
+                        for (var i = 0; i < wid; i++) {
+                            for (var j = 0; j < hei; j++) {
+
+                                var k = (wid * j + i) * 4;//取個陣列對應的位置
+
+                                //取得 RGBA
+                                var col_r = s.data[k + 0].toString(16);
+                                var col_g = s.data[k + 1].toString(16);
+                                var col_b = s.data[k + 2].toString(16);
+                                var col_a = s.data[k + 3];
+
+                                //避免某些值是個位數
+                                if (col_r.length == 1) {
+                                    col_r = "0" + col_r;
+                                }
+                                if (col_g.length == 1) {
+                                    col_g = "0" + col_g;
+                                }
+                                if (col_b.length == 1) {
+                                    col_b = "0" + col_b;
+                                }
+
+                                var td = "<td bgcolor='#" + col_r + col_g + col_b + "'></td>";
+
+                                if (col_a < 3) {//不印出透明顏色
+                                    td = "<td></td>";
+                                }
+
+                                ar[i][j] = td;
+                            }
+                        }
+
+
+                        //產生表格
+                        for (var i = 0; i < hei; i++) {
+                            for (var j = 0; j < wid; j++) {
+
+                                var td = "";
+
+                                if (j == 0) {
+                                    td += "<tr>";
+                                }
+
+                                td += ar[j][i];
+                                if (j == wid - 1) {
+                                    td += "</tr>";
+                                }
+
+                                sum += td;
+                            }
+                        }
+
+                        sum += "</table> <p>&nbsp;</p><p>&nbsp;</p>";
+
+                        document.getElementById("d1_output").innerHTML = sum;
+
+                        fun_sel_output_type("1");//回到第一個頁籤
+                    }
+
+
+
+                    ///
+                    ///
+                    ///
+                    function fun_輸出成圖片() {
+
+                        var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
+                        var wid = obj_table.getAttribute("width");
+                        var hei = obj_table.getAttribute("height");
+                        var int_水平數量 = obj_table.getElementsByTagName("tr")[0].getElementsByTagName("td").length;
+                        var int_垂直數量 = obj_table.getElementsByTagName("tr").length;
+
+                        //canvas物件
+                        var float_size = Math.floor(wid / int_水平數量) + 1;
+                        var can01 = document.getElementById("can_output_img");
+                        can01.width = int_水平數量 * float_size;
+                        can01.height = int_垂直數量 * float_size;
+                        c01 = can01.getContext("2d");
+
+                        for (var i = 0; i < int_垂直數量; i++) {
+                            for (var j = 0; j < int_水平數量; j++) {
+                                var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
+                                c01.fillStyle = bgcolor;//設定顏色
+                                c01.fillRect(j * float_size, i * float_size, float_size, float_size);//繪製矩形
+                            }
+                        }
+
+                        //把canvas轉成圖片后在進行自動縮放
+                        var obj_img = document.createElement("img");
+                        obj_img.src = can01.toDataURL();//輸出成圖片
+                        obj_img.onload = function () {
+                            var can02 = document.getElementById("can_output_img_2");
+                            can02.width = wid;
+                            can02.height = hei;
+                            c02 = can02.getContext("2d");
+                            c02.drawImage(this, 0, 0, wid, hei);
+                            document.getElementById("img_output").src = can02.toDataURL();//輸出成圖片
+
+                            c02.clearRect(0, 0, can01.width, can01.height);  //清空
+                            c02.clearRect(0, 0, can02.width, can02.height);  //清空
+                            obj_img = null;
+                        };
+
+
+                    }
+
+                    ///
+                    ///
+                    ///
+                    function fun_save_img() {
+
+                        //設定檔名
+                        var d = new Date();
+                        var name = d.getFullYear() + "-" +
+                            ("00" + (d.getMonth() + 1)).slice(-2) + "-" +
+                            ("00" + d.getDate()).slice(-2) + " " +
+                            ("00" + d.getHours()).slice(-2) + "-"
+                            + ("00" + d.getMinutes()).slice(-2) + "-"
+                            + ("00" + d.getSeconds()).slice(-2);
+                        name += ".png";
+
+                        document.getElementById("a_download").setAttribute("download", name);
+                        document.getElementById("a_download").href = document.getElementById("img_output").src;
+                        document.getElementById("a_download").click();
+                    }
+
+
+                    ///
+                    ///如果是手機，就覆寫hover
+                    ///
+                    var useragent = navigator.userAgent;
+                    useragent = useragent.toLowerCase();
+
+                    if (useragent.indexOf('iphone') != -1 || useragent.indexOf('ipad') != -1 || useragent.indexOf('ipod') != -1 || useragent.indexOf('android') != -1) {
+                        document.write("<style>.but:hover {background-color: rgb(0, 177, 255)!important;}</style>");
+                    }
     </script>
 
 
 
 </body>
+
 </html>
