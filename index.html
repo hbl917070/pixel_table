@@ -209,29 +209,28 @@
                     border-collapse: collapse;
                 }
 
-                #table_output_type a {
-                    margin: 5px 15px 0px 15px;
-                    font-size: 20px;
-                    font-weight: 900;
-                    white-space: nowrap;
-                    display: block;
-                    line-height: 30px;
-                }
+                    #table_output_type a {
+                        margin: 5px 15px 0px 15px;
+                        font-size: 20px;
+                        font-weight: 900;
+                        white-space: nowrap;
+                        display: block;
+                        line-height: 30px;
+                    }
 
-                #table_output_type td {
-                    border-bottom: 6px solid rgba(0, 0, 0, 0);
-                    /*禁止選取*/
-                    -webkit-touch-callout: none;
-                    -webkit-user-select: none;
-                    -khtml-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
+                    #table_output_type td {
+                        border-bottom: 6px solid rgba(0, 0, 0, 0);
+                        /*禁止選取*/
+                        -webkit-touch-callout: none;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                    }
 
-                #table_output_type td:hover {
-                    color: rgb(0, 146, 255);
-                }
+                        #table_output_type td:hover {
+                            color: rgb(0, 146, 255);
+                        }
 
                 .table_output_sel {
                     border-bottom: 6px solid #00b1ff !important;
@@ -244,11 +243,6 @@
                     margin-right: -5px;
                     height: 1px;
                     background-color: rgb(0, 177, 255);
-                    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
-                    /*background: -moz-linear-gradient(top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
-                    background: -webkit-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0) 100%);
-                    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0) 100%);
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#00000000',GradientType=0 );*/
                 }
 
                 #text_output_html,
@@ -372,7 +366,7 @@
         <!--【說明】-->
         <div class="box">
             <h2>說明</h2>
-            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.4.1
+            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.4.2
             <br> 討論區：
             <a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br> 作者：
             <a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
@@ -415,419 +409,422 @@
 
 
     <script type="text/javascript">
-                    ///
-                    ///顯示訊息框
-                    ///
-                    function fun_alert(s) {
-                        var div_alert = document.getElementById("div_alert");
-                        div_alert.style.opacity = 1;
-                        div_alert.innerHTML = s;
-                        setTimeout(function () {
-                            if (div_alert.style.opacity == 1)
-                                div_alert.style.opacity = 0;
-                        }, 1000);
+        ///
+        ///顯示訊息框
+        ///
+        function fun_alert(s) {
+            var div_alert = document.getElementById("div_alert");
+            div_alert.style.opacity = 1;
+            div_alert.innerHTML = s;
+            setTimeout(function () {
+                if (div_alert.style.opacity == 1)
+                    div_alert.style.opacity = 0;
+            }, 1000);
+        }
+
+
+        ///
+        ///選取物件
+        ///
+        function SelectText(element) {
+            var doc = document,
+                text = doc.getElementById(element),
+                range, selection;
+            if (doc.body.createTextRange) {
+                range = document.body.createTextRange();
+                range.moveToElementText(text);
+                range.select();
+            } else if (window.getSelection) {
+                selection = window.getSelection();
+                range = document.createRange();
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+
+        ///
+        ///直接複製table
+        ///
+        function fun_copy_table() {
+            SelectText("d1_output");//選取物件
+            document.execCommand('copy');//複製當前選取的東西
+            fun_alert("複製成功");
+        }
+
+
+        ///
+        ///複製成html原始碼
+        ///
+        function fun_show_html() {
+            var x = document.getElementById("d1_output").innerHTML;
+
+            document.getElementById("text_output_html").value = x;
+        }
+
+
+        ///
+        ///複製成巴哈姆特原始碼
+        ///
+        function fun_show_baha() {
+
+            var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
+            var wid = obj_table.getAttribute("width");
+            var hei = obj_table.getAttribute("height");
+            var sum = "[div] [/div][div] [/div] [table width=" + wid + " cellspacing=0 cellpadding=0 height=" + hei + "]";
+
+            for (var i = 0; i < obj_table.getElementsByTagName("tr").length; i++) {
+
+
+                sum += "[tr]";
+
+                for (var j = 0; j < obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td").length; j++) {
+
+                    var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
+                    sum += "[td bgcolor=" + bgcolor + "][/td]";
+                }
+
+                sum += "[/tr]";
+
+            }
+            sum += "[/table][div] [/div][div] [/div]";
+
+
+            document.getElementById("text_output_baha").value = sum;
+
+
+        }
+
+
+        ///
+        /// 複製到剪貼簿
+        ///
+        function copy_string(text_id) {
+
+            var textarea_copy = document.getElementById(text_id);
+            textarea_copy.select();
+            document.execCommand('copy');
+            fun_alert("複製成功");
+
+            //textarea_copy.textContent = "";
+
+
+            /*var clip_area = document.createElement('textarea');
+            clip_area.textContent = s;
+
+            document.body.appendChild(clip_area);
+            clip_area.select();
+
+            document.execCommand('copy');
+            clip_area.remove();*/
+        }
+
+
+
+        window.onload = function () {
+
+
+            //選取圖片
+            var input = document.getElementById("file_input");
+
+            if (typeof FileReader === 'undefined') {
+                alert("抱歉，你的瀏覽器不支持 FileReader");
+                input.setAttribute('disabled', 'disabled');
+            } else {
+                input.addEventListener('change', readFile, false);
+            }
+
+
+
+            function readFile() {
+                var file = this.files[0];
+                /*if (!/image\/\w+/.test(file.type)) {
+                    alert("文件必須為圖片！");
+                    return false;
+                }*/
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    var src = this.result;//把載入的檔案變成圖片網址
+
+                    fun_載入圖片(src);
+                    document.getElementById("div_out").style.display = "block";//第一次執行後就顯示輸出結果
+                    document.getElementById("but_Apply").style.display = "inline-block";//第一次執行後就顯示輸出結果
+
+                }
+            }
+
+        }
+
+
+
+        ///
+        ///
+        ///
+        function fun_載入圖片(src) {
+
+            var obj_img = document.createElement("img");
+
+            obj_img.src = src;
+            obj_img.onload = function () {
+
+
+                var wid = obj_img.naturalWidth;
+                var hei = obj_img.naturalHeight;
+
+
+                //避免圖太大
+                var max_size = 300;
+
+                if (wid > max_size || hei > max_size) {
+                    var w01 = wid / max_size;
+                    var h01 = hei / max_size;
+
+                    if (w01 > h01) {
+                        wid = wid / w01;
+                        hei = hei / w01;
+                    } else {
+                        wid = wid / h01;
+                        hei = hei / h01;
+                    }
+                }
+
+                //設定canvas物件
+                var can = document.getElementById("can01");
+                can.width = wid;
+                can.height = hei;
+                c = can.getContext("2d");
+                c.drawImage(obj_img, 0, 0, wid, hei);
+
+                document.getElementById("img01").src = can.toDataURL('image/png', 0.8);//輸出成圖片
+
+                document.getElementById("img01").onload = function () {
+
+                    fun_轉換(document.getElementById("img01"));//圖片載入完成後執行轉換
+                    document.getElementById("img01").onload = function () { };
+                }
+
+                document.getElementById("file_input").value = "";//避免無法開啟相同的圖片
+
+            }
+
+        }
+
+
+
+        ///
+        ///
+        ///
+        function fun_轉換(obj_img) {
+
+            //取得圖片物件size
+            var wid = obj_img.naturalWidth;
+            var hei = obj_img.naturalHeight;
+
+            //寬度數量
+            var max_wid = parseInt(document.getElementById("text_wid").value.trim());
+            if (isNaN(max_wid)) {
+                max_wid = 50;
+            }
+            if (max_wid <= 0) {
+                max_wid = 1;
+            }
+            if (max_wid > 120) {
+                max_wid = 120;
+            }
+            document.getElementById("text_wid").value = max_wid;
+
+            var double_除數 = wid / max_wid;
+
+            wid = Math.floor(wid / double_除數);
+            hei = Math.floor(hei / double_除數);
+
+
+            //輸出結果的長寬
+            var output_wid = parseInt(document.getElementById("text_output").value.trim());
+            if (isNaN(output_wid)) {
+                output_wid = 500;
+            }
+            if (output_wid <= 0) {
+                output_wid = 1;
+            }
+            if (output_wid > 1000) {
+                output_wid = 1000;
+            }
+            document.getElementById("text_output").value = output_wid;
+
+            var double_除數 = wid / output_wid;
+
+            var output_wid = Math.floor(wid / double_除數);
+            var output_hei = Math.floor(hei / double_除數);
+
+
+            //原圖的canvas物件
+            var can01 = document.getElementById("can01");
+            can01.width = wid;
+            can01.height = hei;
+            c01 = can01.getContext("2d");
+            //c01.scale(10, 10);
+            c01.drawImage(obj_img, 0, 0, wid, hei);
+
+
+
+
+            //轉換
+            var s = c01.getImageData(0, 0, wid, hei);//從原圖取得每個像素點
+            //var r = c_2.createImageData(56, 90);//新建一個空白的
+
+            //將值放入另一個二維陣列中處理
+            var ar = new Array(wid);
+            for (var i = 0; i < wid; i++) {
+                ar[i] = new Array(hei);
+            }
+
+            var sum = "<p>&nbsp;</p> <table cellspacing='0' cellpadding='0' width='" + output_wid + "' height='" + output_hei + "'>";
+
+            for (var i = 0; i < wid; i++) {
+                for (var j = 0; j < hei; j++) {
+
+                    var k = (wid * j + i) * 4;//取個陣列對應的位置
+
+                    //取得 RGBA
+                    var col_r = s.data[k + 0].toString(16);
+                    var col_g = s.data[k + 1].toString(16);
+                    var col_b = s.data[k + 2].toString(16);
+                    var col_a = s.data[k + 3];
+
+                    //避免某些值是個位數
+                    if (col_r.length == 1) {
+                        col_r = "0" + col_r;
+                    }
+                    if (col_g.length == 1) {
+                        col_g = "0" + col_g;
+                    }
+                    if (col_b.length == 1) {
+                        col_b = "0" + col_b;
                     }
 
+                    var td = "<td bgcolor='#" + col_r + col_g + col_b + "'></td>";
 
-                    ///
-                    ///選取物件
-                    ///
-                    function SelectText(element) {
-                        var doc = document,
-                            text = doc.getElementById(element),
-                            range, selection;
-                        if (doc.body.createTextRange) {
-                            range = document.body.createTextRange();
-                            range.moveToElementText(text);
-                            range.select();
-                        } else if (window.getSelection) {
-                            selection = window.getSelection();
-                            range = document.createRange();
-                            range.selectNodeContents(text);
-                            selection.removeAllRanges();
-                            selection.addRange(range);
-                        }
+                    if (col_a < 3) {//不印出透明顏色
+                        td = "<td></td>";
                     }
 
+                    ar[i][j] = td;
+                }
+            }
 
-                    ///
-                    ///直接複製table
-                    ///
-                    function fun_copy_table() {
-                        SelectText("d1_output");//選取物件
-                        document.execCommand('copy');//複製當前選取的東西
-                        fun_alert("複製成功");
+
+            //產生表格
+            for (var i = 0; i < hei; i++) {
+                for (var j = 0; j < wid; j++) {
+
+                    var td = "";
+
+                    if (j == 0) {
+                        td += "<tr>";
                     }
 
-
-                    ///
-                    ///複製成html原始碼
-                    ///
-                    function fun_show_html() {
-                        var x = document.getElementById("d1_output").innerHTML;
-
-                        document.getElementById("text_output_html").value = x;
+                    td += ar[j][i];
+                    if (j == wid - 1) {
+                        td += "</tr>";
                     }
 
+                    sum += td;
+                }
+            }
 
-                    ///
-                    ///複製成巴哈姆特原始碼
-                    ///
-                    function fun_show_baha() {
+            sum += "</table> <p>&nbsp;</p><p>&nbsp;</p>";
 
-                        var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
-                        var wid = obj_table.getAttribute("width");
-                        var hei = obj_table.getAttribute("height");
-                        var sum = "[div] [/div][div] [/div] [table width=" + wid + " cellspacing=0 cellpadding=0 height=" + hei + "]";
+            document.getElementById("d1_output").innerHTML = sum;
 
-                        for (var i = 0; i < obj_table.getElementsByTagName("tr").length; i++) {
+            fun_sel_output_type("1");//回到第一個頁籤
+        }
 
 
-                            sum += "[tr]";
 
-                            for (var j = 0; j < obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td").length; j++) {
+        ///
+        ///
+        ///
+        function fun_輸出成圖片() {
 
-                                var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
-                                sum += "[td bgcolor=" + bgcolor + "][/td]";
-                            }
+            var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
+            var wid = obj_table.getAttribute("width");
+            var hei = obj_table.getAttribute("height");
+            var int_水平數量 = obj_table.getElementsByTagName("tr")[0].getElementsByTagName("td").length;
+            var int_垂直數量 = obj_table.getElementsByTagName("tr").length;
 
-                            sum += "[/tr]";
+            //canvas物件
+            var float_size = Math.floor(wid / int_水平數量) + 1;
+            var can01 = document.getElementById("can_output_img");
+            can01.width = int_水平數量 * float_size;
+            can01.height = int_垂直數量 * float_size;
+            c01 = can01.getContext("2d");
 
-                        }
-                        sum += "[/table][div] [/div][div] [/div]";
-
-
-                        document.getElementById("text_output_baha").value = sum;
-
-
+            for (var i = 0; i < int_垂直數量; i++) {
+                for (var j = 0; j < int_水平數量; j++) {
+                    var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
+                    if (bgcolor == undefined) {
+                        continue;
                     }
-
-
-                    /*
-                    * 複製到剪貼簿
-                    */
-                    function copy_string(text_id) {
-
-                        var textarea_copy = document.getElementById(text_id);
-                        textarea_copy.select();
-                        document.execCommand('copy');
-                        fun_alert("複製成功");
-
-                        //textarea_copy.textContent = "";
-
-
-                        /*var clip_area = document.createElement('textarea');
-                        clip_area.textContent = s;
-            
-                        document.body.appendChild(clip_area);
-                        clip_area.select();
-            
-                        document.execCommand('copy');
-                        clip_area.remove();*/
-                    }
-
-
-
-                    window.onload = function () {
-
-
-                        //選取圖片
-                        var input = document.getElementById("file_input");
-
-                        if (typeof FileReader === 'undefined') {
-                            alert("抱歉，你的瀏覽器不支持 FileReader");
-                            input.setAttribute('disabled', 'disabled');
-                        } else {
-                            input.addEventListener('change', readFile, false);
-                        }
-
-
-
-                        function readFile() {
-                            var file = this.files[0];
-                            /*if (!/image\/\w+/.test(file.type)) {
-                                alert("文件必須為圖片！");
-                                return false;
-                            }*/
-                            var reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onload = function (e) {
-                                var src = this.result;//把載入的檔案變成圖片網址
-
-                                fun_載入圖片(src);
-                                document.getElementById("div_out").style.display = "block";//第一次執行後就顯示輸出結果
-                                document.getElementById("but_Apply").style.display = "inline-block";//第一次執行後就顯示輸出結果
-
-                            }
-                        }
-
-                    }
-
-
-
-                    ///
-                    ///
-                    ///
-                    function fun_載入圖片(src) {
-
-                        var obj_img = document.createElement("img");
-
-                        obj_img.src = src;
-                        obj_img.onload = function () {
-
-
-                            var wid = obj_img.naturalWidth;
-                            var hei = obj_img.naturalHeight;
-
-
-                            //避免圖太大
-                            var max_size = 300;
-
-                            if (wid > max_size || hei > max_size) {
-                                var w01 = wid / max_size;
-                                var h01 = hei / max_size;
-
-                                if (w01 > h01) {
-                                    wid = wid / w01;
-                                    hei = hei / w01;
-                                } else {
-                                    wid = wid / h01;
-                                    hei = hei / h01;
-                                }
-                            }
-
-                            //設定canvas物件
-                            var can = document.getElementById("can01");
-                            can.width = wid;
-                            can.height = hei;
-                            c = can.getContext("2d");
-                            c.drawImage(obj_img, 0, 0, wid, hei);
-
-                            document.getElementById("img01").src = can.toDataURL('image/png', 0.8);//輸出成圖片
-
-                            document.getElementById("img01").onload = function () {
-
-                                fun_轉換(document.getElementById("img01"));//圖片載入完成後執行轉換
-                                document.getElementById("img01").onload = function () { };
-                            }
-
-                            document.getElementById("file_input").value = "";//避免無法開啟相同的圖片
-
-                        }
-
-                    }
-
-
-
-                    ///
-                    ///
-                    ///
-                    function fun_轉換(obj_img) {
-
-                        //取得圖片物件size
-                        var wid = obj_img.naturalWidth;
-                        var hei = obj_img.naturalHeight;
-
-                        //寬度數量
-                        var max_wid = parseInt(document.getElementById("text_wid").value.trim());
-                        if (isNaN(max_wid)) {
-                            max_wid = 50;
-                        }
-                        if (max_wid <= 0) {
-                            max_wid = 1;
-                        }
-                        if (max_wid > 120) {
-                            max_wid = 120;
-                        }
-                        document.getElementById("text_wid").value = max_wid;
-
-                        var double_除數 = wid / max_wid;
-
-                        wid = Math.floor(wid / double_除數);
-                        hei = Math.floor(hei / double_除數);
-
-
-                        //輸出結果的長寬
-                        var output_wid = parseInt(document.getElementById("text_output").value.trim());
-                        if (isNaN(output_wid)) {
-                            output_wid = 500;
-                        }
-                        if (output_wid <= 0) {
-                            output_wid = 1;
-                        }
-                        if (output_wid > 1000) {
-                            output_wid = 1000;
-                        }
-                        document.getElementById("text_output").value = output_wid;
-
-                        var double_除數 = wid / output_wid;
-
-                        var output_wid = Math.floor(wid / double_除數);
-                        var output_hei = Math.floor(hei / double_除數);
-
-
-                        //原圖的canvas物件
-                        var can01 = document.getElementById("can01");
-                        can01.width = wid;
-                        can01.height = hei;
-                        c01 = can01.getContext("2d");
-                        //c01.scale(10, 10);
-                        c01.drawImage(obj_img, 0, 0, wid, hei);
-
-
-
-
-                        //轉換
-                        var s = c01.getImageData(0, 0, wid, hei);//從原圖取得每個像素點
-                        //var r = c_2.createImageData(56, 90);//新建一個空白的
-
-                        //將值放入另一個二維陣列中處理
-                        var ar = new Array(wid);
-                        for (var i = 0; i < wid; i++) {
-                            ar[i] = new Array(hei);
-                        }
-
-                        var sum = "<p>&nbsp;</p> <table cellspacing='0' cellpadding='0' width='" + output_wid + "' height='" + output_hei + "'>";
-
-                        for (var i = 0; i < wid; i++) {
-                            for (var j = 0; j < hei; j++) {
-
-                                var k = (wid * j + i) * 4;//取個陣列對應的位置
-
-                                //取得 RGBA
-                                var col_r = s.data[k + 0].toString(16);
-                                var col_g = s.data[k + 1].toString(16);
-                                var col_b = s.data[k + 2].toString(16);
-                                var col_a = s.data[k + 3];
-
-                                //避免某些值是個位數
-                                if (col_r.length == 1) {
-                                    col_r = "0" + col_r;
-                                }
-                                if (col_g.length == 1) {
-                                    col_g = "0" + col_g;
-                                }
-                                if (col_b.length == 1) {
-                                    col_b = "0" + col_b;
-                                }
-
-                                var td = "<td bgcolor='#" + col_r + col_g + col_b + "'></td>";
-
-                                if (col_a < 3) {//不印出透明顏色
-                                    td = "<td></td>";
-                                }
-
-                                ar[i][j] = td;
-                            }
-                        }
-
-
-                        //產生表格
-                        for (var i = 0; i < hei; i++) {
-                            for (var j = 0; j < wid; j++) {
-
-                                var td = "";
-
-                                if (j == 0) {
-                                    td += "<tr>";
-                                }
-
-                                td += ar[j][i];
-                                if (j == wid - 1) {
-                                    td += "</tr>";
-                                }
-
-                                sum += td;
-                            }
-                        }
-
-                        sum += "</table> <p>&nbsp;</p><p>&nbsp;</p>";
-
-                        document.getElementById("d1_output").innerHTML = sum;
-
-                        fun_sel_output_type("1");//回到第一個頁籤
-                    }
-
-
-
-                    ///
-                    ///
-                    ///
-                    function fun_輸出成圖片() {
-
-                        var obj_table = document.getElementById("d1_output").getElementsByTagName("table")[0];
-                        var wid = obj_table.getAttribute("width");
-                        var hei = obj_table.getAttribute("height");
-                        var int_水平數量 = obj_table.getElementsByTagName("tr")[0].getElementsByTagName("td").length;
-                        var int_垂直數量 = obj_table.getElementsByTagName("tr").length;
-
-                        //canvas物件
-                        var float_size = Math.floor(wid / int_水平數量) + 1;
-                        var can01 = document.getElementById("can_output_img");
-                        can01.width = int_水平數量 * float_size;
-                        can01.height = int_垂直數量 * float_size;
-                        c01 = can01.getContext("2d");
-
-                        for (var i = 0; i < int_垂直數量; i++) {
-                            for (var j = 0; j < int_水平數量; j++) {
-                                var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
-                               if(bgcolor==undefined){
-                                   continue;
-                               }
-                                c01.fillStyle = bgcolor;//設定顏色
-                                c01.fillRect(j * float_size, i * float_size, float_size, float_size);//繪製矩形
-                            }
-                        }
-
-                        //把canvas轉成圖片后在進行自動縮放
-                        var obj_img = document.createElement("img");
-                        obj_img.src = can01.toDataURL();//輸出成圖片
-                        obj_img.onload = function () {
-                            var can02 = document.getElementById("can_output_img_2");
-                            can02.width = wid;
-                            can02.height = hei;
-                            c02 = can02.getContext("2d");
-                            c02.drawImage(this, 0, 0, wid, hei);
-                            document.getElementById("img_output").src = can02.toDataURL();//輸出成圖片
-
-                            c02.clearRect(0, 0, can01.width, can01.height);  //清空
-                            c02.clearRect(0, 0, can02.width, can02.height);  //清空
-                            obj_img = null;
-                        };
-
-
-                    }
-
-                    ///
-                    ///
-                    ///
-                    function fun_save_img() {
-
-                        //設定檔名
-                        var d = new Date();
-                        var name = d.getFullYear() + "-" +
-                            ("00" + (d.getMonth() + 1)).slice(-2) + "-" +
-                            ("00" + d.getDate()).slice(-2) + " " +
-                            ("00" + d.getHours()).slice(-2) + "-"
-                            + ("00" + d.getMinutes()).slice(-2) + "-"
-                            + ("00" + d.getSeconds()).slice(-2);
-                        name += ".png";
-
-                        document.getElementById("a_download").setAttribute("download", name);
-                        document.getElementById("a_download").href = document.getElementById("img_output").src;
-                        document.getElementById("a_download").click();
-                    }
-
-
-                    ///
-                    ///如果是手機，就覆寫hover
-                    ///
-                    var useragent = navigator.userAgent;
-                    useragent = useragent.toLowerCase();
-
-                    if (useragent.indexOf('iphone') != -1 || useragent.indexOf('ipad') != -1 || useragent.indexOf('ipod') != -1 || useragent.indexOf('android') != -1) {
-                        document.write("<style>.but:hover {background-color: rgb(0, 177, 255)!important;}</style>");
-                    }
+                    c01.fillStyle = bgcolor;//設定顏色
+                    c01.fillRect(j * float_size, i * float_size, float_size, float_size);//繪製矩形
+                }
+            }
+
+            //把canvas轉成圖片后在進行自動縮放
+            var obj_img = document.createElement("img");
+            obj_img.src = can01.toDataURL();//輸出成圖片
+            obj_img.onload = function () {
+                var can02 = document.getElementById("can_output_img_2");
+                can02.width = wid;
+                can02.height = hei;
+                c02 = can02.getContext("2d");
+                c02.drawImage(this, 0, 0, wid, hei);
+                document.getElementById("img_output").src = can02.toDataURL();//輸出成圖片
+
+                c02.clearRect(0, 0, can01.width, can01.height);  //清空
+                c02.clearRect(0, 0, can02.width, can02.height);  //清空
+                obj_img = null;
+            };
+
+
+        }
+
+        ///
+        ///
+        ///
+        function fun_save_img() {
+
+            //設定檔名
+            var d = new Date();
+            var name = d.getFullYear() + "-" +
+                ("00" + (d.getMonth() + 1)).slice(-2) + "-" +
+                ("00" + d.getDate()).slice(-2) + " " +
+                ("00" + d.getHours()).slice(-2) + "-"
+                + ("00" + d.getMinutes()).slice(-2) + "-"
+                + ("00" + d.getSeconds()).slice(-2);
+            name += ".png";
+
+            document.getElementById("a_download").setAttribute("download", name);
+            document.getElementById("a_download").href = document.getElementById("img_output").src;
+            document.getElementById("a_download").click();
+        }
+
+
+        ///
+        ///如果是手機，就覆寫hover
+        ///
+        var useragent = navigator.userAgent;
+        useragent = useragent.toLowerCase();
+
+        if (useragent.indexOf('iphone') != -1 || useragent.indexOf('ipad') != -1 || useragent.indexOf('ipod') != -1 || useragent.indexOf('android') != -1) {
+            document.write("<style>" +
+                ".but:hover {background-color: rgb(0, 177, 255)}" +
+                "#table_output_type td:hover{color:#000;}" +
+                "</style>");
+        }
     </script>
 
 
