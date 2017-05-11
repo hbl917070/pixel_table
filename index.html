@@ -372,7 +372,7 @@
         <!--【說明】-->
         <div class="box">
             <h2>說明</h2>
-            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.4.0
+            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.4.1
             <br> 討論區：
             <a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br> 作者：
             <a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
@@ -771,6 +771,9 @@
                         for (var i = 0; i < int_垂直數量; i++) {
                             for (var j = 0; j < int_水平數量; j++) {
                                 var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
+                               if(bgcolor==undefined){
+                                   continue;
+                               }
                                 c01.fillStyle = bgcolor;//設定顏色
                                 c01.fillRect(j * float_size, i * float_size, float_size, float_size);//繪製矩形
                             }
