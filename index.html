@@ -403,7 +403,7 @@
         <!--【說明】-->
         <div class="box">
             <h2>說明</h2>
-            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.5.0
+            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.5.1
             <br> 討論區：
             <a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br> 作者：
             <a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
@@ -863,12 +863,12 @@
         var useragent = navigator.userAgent;
         useragent = useragent.toLowerCase();
 
-        if (useragent.indexOf('iphone') != -1 || useragent.indexOf('ipad') != -1 || useragent.indexOf('ipod') != -1 || useragent.indexOf('android') != -1) {
+        //if (useragent.indexOf('iphone') != -1 || useragent.indexOf('ipad') != -1 || useragent.indexOf('ipod') != -1 || useragent.indexOf('android') != -1) {
             document.write("<style>" +
                 ".but:hover {background-color: rgb(0, 177, 255)}" +
-                "#table_output_type td:hover{color:#000;}" +
+                "#table_output_type td:hover{color:inherit;}" +
                 "</style>");
-        }
+        //}
     </script>
 
 
