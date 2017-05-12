@@ -14,6 +14,9 @@
         body {
             margin: 0px;
             padding: 0px;
+        }
+
+        body {
             font-family: "微軟正黑體";
             background-color: rgb(237, 237, 237);
             font-size: 16px;
@@ -34,6 +37,7 @@
 
         input[type='tel'] {
             padding: 5px;
+            border: 1px solid #000;
         }
 
         .title {
@@ -41,12 +45,12 @@
             margin: 0px;
         }
 
-        .title h1 {
-            margin: 0px;
-            color: #FFF;
-            font-size: 24px;
-            padding: 5px;
-        }
+            .title h1 {
+                margin: 0px;
+                color: #FFF;
+                font-size: 24px;
+                padding: 10px 5px;
+            }
 
         .but {
             margin: 5px 5px 5px 0px;
@@ -64,14 +68,14 @@
             user-select: none;
         }
 
-        .but:hover {
-            background-color: rgb(0, 125, 196);
-        }
+            .but:hover {
+                background-color: rgb(0, 125, 196);
+            }
 
-        .but:active {
-            transform: scale(1.03);
-            background-color: rgb(0, 196, 136);
-        }
+            .but:active {
+                transform: scale(1.03);
+                background-color: rgb(0, 196, 136);
+            }
 
         hr {
             border: none;
@@ -132,17 +136,25 @@
             padding: 5px;
         }
 
-        .box h2 {
-            margin: 0px;
-            margin-bottom: 10px;
-            font-size: 24px;
-            margin-left: 0px;
+            .box h2 {
+                margin: 0px;
+                margin-bottom: 10px;
+                font-size: 24px;
+                margin-left: 0px;
+            }
+
+        a[href] {
+            color: rgb(15, 189, 255) !important;
+        }
+
+        input[type=radio] {
+            transform: scale(1.2);
         }
     </style>
 
 
 
-
+    <link id="css_theme" rel="stylesheet" href="color_black.css" />
 
 
 </head>
@@ -177,17 +189,43 @@
 
             <table border="0" cellspacing="0" cellpadding="0">
                 <tr title="水平的格子數量，不建議超過80">
-                    <td>水平格數(1~120)</td>
+                    <td style="padding-right:5px;">水平格數(1~120)</td>
                     <td><input type="tel" id="text_wid" value="50" /></td>
                 </tr>
                 <tr title="輸出的表格寬度" style="height:45px;">
                     <td>輸出寬度</td>
                     <td><input type="tel" id="text_output" value="570" /></td>
                 </tr>
+                <tr>
+                    <td>
+                        將白色視為透明
+
+                    </td>
+                    <td>
+                        <label><input type="radio" name="r_轉透明" value="t" id="radio_白色轉透明" />啟用 </label>
+                        <a>　</a>
+                        <label><input type="radio" name="r_轉透明" value="f" checked />關閉 </label>
+                    </td>
+                </tr>
+
             </table>
+
+
         </div>
 
 
+        <!--主題-->
+        <div class="box">
+            <h2>主題</h2>
+            <label><input type="radio" name="r_theme" onchange='document.getElementById("css_theme").href = ""' id="radio_theme_w" checked />白色 </label>
+            <a>　</a>
+            <label><input type="radio" name="r_theme" onchange='document.getElementById("css_theme").href = "color_black.css"' />深色 </label>
+            <script>
+                if (document.getElementById("radio_theme_w").checked) {
+                    document.getElementById("css_theme").href = ""
+                }
+            </script>
+        </div>
 
 
         <!--【輸出結果】，第一次執行後才會出現-->
@@ -200,7 +238,6 @@
                     overflow-x: auto;
                     overflow-y: hidden;
                     margin: -5px;
-                    background-color: #FFF;
                     margin-bottom: 10px;
                 }
 
@@ -366,7 +403,7 @@
         <!--【說明】-->
         <div class="box">
             <h2>說明</h2>
-            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.4.2
+            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.5.0
             <br> 討論區：
             <a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a><br> 作者：
             <a href="https://home.gamer.com.tw/homeindex.php?owner=hbl917070" target="_blank">hbl917070（深海異音）</a>
@@ -681,6 +718,8 @@
                 ar[i] = new Array(hei);
             }
 
+            var bool_白色轉透明 = document.getElementById("radio_白色轉透明").checked;
+
             var sum = "<p>&nbsp;</p> <table cellspacing='0' cellpadding='0' width='" + output_wid + "' height='" + output_hei + "'>";
 
             for (var i = 0; i < wid; i++) {
@@ -707,8 +746,13 @@
 
                     var td = "<td bgcolor='#" + col_r + col_g + col_b + "'></td>";
 
-                    if (col_a < 3) {//不印出透明顏色
+                    //不印出透明顏色
+                    if (col_a < 3) {
                         td = "<td></td>";
+                    } else if (bool_白色轉透明) {
+                        if (s.data[k + 0] >= 253 && s.data[k + 1] >= 253 && s.data[k + 2] >= 253) {
+                            td = "<td></td>";
+                        }
                     }
 
                     ar[i][j] = td;
@@ -828,7 +872,7 @@
     </script>
 
 
-
+   
 </body>
 
 </html>
