@@ -452,7 +452,7 @@
         <!--【說明】-->
         <div class="box">
             <h2>說明</h2>
-            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.5.2
+            說明：將圖片轉換成像素圖，並且用表格的形式呈現。<br> 版本：1.5.3
             <br>
             討論區：
             <a href="https://forum.gamer.com.tw/C.php?bsn=60076&snA=3923782" target="_blank">討論區</a>
@@ -571,7 +571,11 @@
                 for (var j = 0; j < obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td").length; j++) {
 
                     var bgcolor = obj_table.getElementsByTagName("tr")[i].getElementsByTagName("td")[j].getAttribute("bgcolor");
-                    sum += "[td bgcolor=" + bgcolor + "][/td]";
+                    if (bgcolor == null) {
+                        sum += "[td][/td]";
+                    } else {
+                        sum += "[td bgcolor=" + bgcolor + "][/td]";
+                    }
                 }
 
                 sum += "[/tr]";
